@@ -1,50 +1,32 @@
-import people from "./users.js";
-let users = people;
+import * as usersDao from "../../users/users-dao.js";
 
-const UserController = (app) => {
-  app.get("/api/users", findUsers);
-  app.get("/api/users/:uid", findUserById);
-  app.post("/api/users", createUser);
-  app.delete("/api/users/:uid", deleteUser);
-  app.put("/api/users/:uid", updateUser);
-};
-
-const findUsers = (req, res) => {
-  const type = req.query.type;
-  if (type) {
-    const usersOfType = users.filter((u) => u.type === type);
-    res.json(usersOfType);
-    return;
-  }
-
+const findAllUsers = async (req, res) => {
+  const users = await usersDao.findAllUsers();
   res.json(users);
 };
 
-const findUserById = (req, res) => {
+const findUserById = async (req, res) => {
   const userId = req.params.uid;
-  const user = users.find((u) => u._id === userId);
+  const user = await usersDao.findUserById(userId);
   res.json(user);
 };
 
-const createUser = (req, res) => {
-  const newUser = req.body;
-  newUser._id = new Date().getTime() + '';
-  users.push(newUser);
-  res.json(newUser);
+const deleteUser = async (req, res) => {
+  const userIdToDelete = req.params.uid;
+  const status = await usersDao.deleteUser(userIdToDelete);
+  res.json(status);
 };
 
-const deleteUser = (req, res) => {
-  const userId = req.params['uid'];
-  users = users.filter(usr => usr._id !== userId);
-  res.sendStatus(200);
-}
-
-const updateUser = (req, res) => {
-  const userId = req.params['uid'];
+const updateUser = async (req, res) => {
+  const userIdToUpdate = req.params.uid;
   const updates = req.body;
-  users = users.map((usr) => usr._id === userId ? {...usr, ...updates} : usr);
+  const status = await usersDao.updateUser(userIdToUpdate, updates);
+  res.json(status);
+};
 
-  res.sendStatus(200);
-}
-
-export default UserController;
+export default (app) => {
+  app.get("/api/users", findAllUsers);
+  app.get("/api/users/:uid", findUserById);
+  app.delete("/api/users/:uid", deleteUser);
+  app.put("/api/users/:uid", updateUser);
+};
