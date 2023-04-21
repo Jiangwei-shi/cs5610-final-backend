@@ -6,7 +6,6 @@ const usersSchema = new mongoose.Schema(
     firstName: String, lastName: String, dob: Date,
     email: String,
     createdAt: { type: Date, default: Date.now },
-    isAdmin: { type: Boolean, default: false },
     role: {
       type: String,
       default: "user",
