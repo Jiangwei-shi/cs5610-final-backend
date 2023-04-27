@@ -1,12 +1,21 @@
 import * as tuitsDao from '../../tuits/tuits-dao.js'
-
+import * as usersDao from "../../users/users-dao.js";
 const createTuit = async (req, res) => {
-  const newTuit = req.body;
-  newTuit.likes = 0;
-  newTuit.liked = false;
-  const insertedTuit = await tuitsDao
-  .createTuit(newTuit);
-  res.json(insertedTuit);
+  try {
+    const newTuit = req.body;
+    newTuit.likes = 0;
+    newTuit.liked = false;
+
+    const user = await usersDao.findUserById(newTuit.uid);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    newTuit.username = user.firstName;
+    const insertedTuit = await tuitsDao.createTuit(newTuit);
+    res.json(insertedTuit);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 const findTuits = async (req, res) => {
