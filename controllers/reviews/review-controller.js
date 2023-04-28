@@ -1,4 +1,5 @@
 import * as reviewDao from "../../reviews/review-dao.js";
+import * as usersDao from "../../users/users-dao.js";
 
 const findReviews = async (req, res) => {
   const resultId = req.params.rid;
@@ -13,13 +14,13 @@ const createReview = async (req, res) => {
     newReview.likes = 0;
     // newReview.liked = false;
 
-    const user = await usersDao.findUserById(newReview.uid);
+    const user = await usersDao.findUserById(newReview.user_id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     newReview.username = user.firstName;
-    // const insertedTuit = await tuitsDao.createTuit(newTuit);
-    // res.json(insertedTuit);
+    const insertedReview = await reviewDao.createReview(newReview);
+    res.json(insertedReview);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -27,4 +28,5 @@ const createReview = async (req, res) => {
 
 export default (app) => {
   app.get("/api/tuits/reviews/:rid", findReviews);
+  app.post("/api/tuits/reviews", createReview);
 };
