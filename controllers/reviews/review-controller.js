@@ -13,11 +13,11 @@ const createReview = async (req, res) => {
     const newReview = req.body;
     newReview.likes = 0;
     // newReview.liked = false;
-
     const user = await usersDao.findUserById(newReview.user_id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     newReview.username = user.firstName;
     const insertedReview = await reviewDao.createReview(newReview);
     res.json(insertedReview);
