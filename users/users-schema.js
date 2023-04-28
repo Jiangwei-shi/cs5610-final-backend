@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const usersSchema = new mongoose.Schema(
   {
     username: { type: String, unique: true, required: true },
@@ -15,7 +16,20 @@ const usersSchema = new mongoose.Schema(
       default: "user",
       enum: ["admin", "user", "guest", "moderator"],
     },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+      },
+    ],
+    followings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+      },
+    ],
   },
   { collection: "users" }
 );
+
 export default usersSchema;
