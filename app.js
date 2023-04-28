@@ -7,6 +7,7 @@ import AuthController from "./controllers/users/auth-controller.js";
 import TuitsController from "./controllers/tuits/tuits-controller.js";
 import SearchController from "./controllers/search/search-controller.js";
 import DetailController from "./controllers/search/detail-controller.js";
+import ReviewController from "./controllers/reviews/review-controller.js";
 
 import mongoose from "mongoose";
 const CONNECTION_STRING =
@@ -35,5 +36,6 @@ AuthController(app);
 TuitsController(app);
 SearchController(app);
 DetailController(app);
+ReviewController(app);
 
 app.listen(process.env.PORT || 4000);

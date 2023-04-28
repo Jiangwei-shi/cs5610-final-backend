@@ -8,8 +8,8 @@ const usersSchema = new mongoose.Schema(
     dob: String,
     email: String,
     createdAt: { type: Date, default: Date.now },
-    location:String,
-    bio:String,
+    location: String,
+    bio: String,
     role: {
       type: String,
       default: "user",
