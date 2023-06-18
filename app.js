@@ -20,7 +20,7 @@ app.use(
   cors({
     credentials: true,
     // origin: "http://localhost:3000", //这是本地连接
-    origin: "https://master--euphonious-unicorn-a457f8.netlify.app/",
+    origin: "https://master--euphonious-unicorn-a457f8.netlify.app",
   })
 );
 app.use(express.json());
