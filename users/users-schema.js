@@ -16,18 +16,6 @@ const usersSchema = new mongoose.Schema(
       default: "user",
       enum: ["admin", "user", "guest", "moderator"],
     },
-    followers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-      },
-    ],
-    followings: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-      },
-    ],
   },
   { collection: "users" }
 );

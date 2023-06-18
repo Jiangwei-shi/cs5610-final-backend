@@ -17,25 +17,22 @@ const login = async (req, res) => {
   }
 };
 
-const profile = async (req, res) => {
-  const currentUser = req.session["currentUser"];
-  if (!currentUser) {
-    res.sendStatus(404);
-    return;
-  }
-  res.json(currentUser);
-};
-
 const logout = async (req, res) => {
   req.session.destroy();
   res.sendStatus(200);
+};
+
+const deleteUser = async (req, res) => {
+  const userIdToDelete = req.params.uid;
+  const status = await usersDao.deleteUser(userIdToDelete);
+  res.json(status);
 };
 
 
 export default (app) => {
   app.post("/api/users/register", register);
   app.post("/api/users/login", login);
-  app.post("/api/users/profile", profile);
   app.post("/api/users/logout", logout);
+  app.delete("/api/users/:uid", deleteUser);
 };
 
